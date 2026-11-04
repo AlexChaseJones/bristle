@@ -43,7 +43,15 @@ function gh(args,{allowFailure=false}={}){
   if(result.status!==0&&!allowFailure)throw new Error(result.stderr.trim()||'GitHub CLI failed');
   return result;
 }
-const api=path=>JSON.parse(gh(['api',path]).stdout);
+const api=path=>{try{return JSON.parse(gh(['api',path]).stdout);}catch(error){throw new Error(`${path}: ${error.message}`);}};
+function findRelease(r){
+  for(let page=1;;page++){
+    const releases=api(`repos/${r.repository}/releases?per_page=100&page=${page}`);
+    const found=releases.find(item=>item.tag_name===r.tag);
+    if(found)return found;
+    if(releases.length<100)return null;
+  }
+}
 async function main(){
   const args=process.argv.slice(2);
   const modes=args.filter(a=>['--check','--draft','--publish'].includes(a));
@@ -59,28 +67,27 @@ async function main(){
   const source=api(`repos/${r.sourceRepository}/releases/tags/${r.tag}`);
   if(source.draft||!source.prerelease)throw new Error('Source must be a published beta release');
   for(const d of r.downloads){const a=source.assets.find(a=>a.name===d.filename);if(!a||a.digest!==`sha256:${d.sha256}`||a.size!==d.sizeBytes)throw new Error('Binary differs from the verified private release');}
-  let existing=gh(['api',`repos/${r.repository}/releases/tags/${r.tag}`],{allowFailure:true});
-  let release;
-  if(existing.status===0){release=JSON.parse(existing.stdout);if(!release.prerelease)throw new Error('Existing tag is not a beta release');compareAssets(release.assets,expected,{complete:!release.draft});}
+  let release=findRelease(r);
+  if(release){if(!release.prerelease)throw new Error('Existing tag is not a beta release');compareAssets(release.assets,expected,{complete:!release.draft});}
   else {
-    if(!existing.stderr.includes('HTTP 404'))throw new Error(existing.stderr.trim());
     if(modes[0]!=='--draft')throw new Error('Create and verify the draft first');
     const local=spawnSync('git',['rev-parse','HEAD'],{encoding:'utf8',windowsHide:true});
     if(local.status!==0)throw new Error('Public repository must have a committed publication snapshot');
     const sha=local.stdout.trim();
     const remote=api(`repos/${r.repository}/commits/${sha}`);if(remote.sha!==sha)throw new Error('Push the publication snapshot first');
     gh(['release','create',r.tag,'--repo',r.repository,'--target',sha,'--title',`Bristle ${r.label}`,'--notes-file',resolve('RELEASE_NOTES.md'),'--draft','--prerelease','--latest=false']);
-    release=api(`repos/${r.repository}/releases/tags/${r.tag}`);
+    release=findRelease(r);
+    if(!release)throw new Error('Draft creation returned without a discoverable release; inspect GitHub before retrying');
   }
   if(release.draft&&modes[0]==='--draft'){
     const missing=expected.filter(a=>!release.assets.some(b=>b.name===a.name));
     for(const a of missing){console.log(`Uploading ${a.name}`);gh(['release','upload',r.tag,a.path,'--repo',r.repository]);}
   }
-  release=api(`repos/${r.repository}/releases/tags/${r.tag}`);
+  release=api(`repos/${r.repository}/releases/${release.id}`);
   compareAssets(release.assets,expected);
   if(release.draft&&modes[0]==='--publish'){
     gh(['release','edit',r.tag,'--repo',r.repository,'--draft=false','--prerelease','--latest=false']);
-    release=api(`repos/${r.repository}/releases/tags/${r.tag}`);compareAssets(release.assets,expected);
+    release=api(`repos/${r.repository}/releases/${release.id}`);compareAssets(release.assets,expected);
   }
   console.log(JSON.stringify({url:release.html_url,tag:release.tag_name,draft:release.draft,assets:release.assets.map(a=>({name:a.name,digest:a.digest,size:a.size})),applicationSourceCommit:r.sourceCommit,publicationCommit:release.target_commitish},null,2));
 }
