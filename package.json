@@ -1,0 +1,16 @@
+{
+  "name": "bristle-public",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs && node scripts/check.mjs && node --test tests/*.test.mjs",
+    "preview": "node scripts/serve.mjs",
+    "release:check": "node scripts/promote-release.mjs --check",
+    "release:draft": "node scripts/promote-release.mjs --draft",
+    "release:publish": "node scripts/promote-release.mjs --publish"
+  },
+  "engines": { "node": ">=22" },
+  "license": "MIT"
+}

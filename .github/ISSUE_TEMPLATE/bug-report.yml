@@ -1,0 +1,46 @@
+name: Bug report
+description: Report a reproducible problem in the Bristle Mac beta.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "This report is public. Remove tokens, passwords, customer data, and internal URLs. Report security issues privately to alexchasejones@icloud.com."
+  - type: input
+    id: version
+    attributes:
+      label: Bristle version
+      placeholder: 0.1.11
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: macOS version and chip
+      placeholder: macOS version, Apple Silicon or Intel
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use a minimal synthetic example. Do not upload production exports.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the exact error text if safe to share.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Approximate collection size, import format, or redacted screenshots if relevant.

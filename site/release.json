@@ -1,0 +1,22 @@
+{
+  "product": "Bristle",
+  "version": "0.1.11",
+  "tag": "v0.1.11-beta.1",
+  "label": "0.1.11 Beta 1",
+  "date": "2026-11-04",
+  "repository": "AlexChaseJones/bristle",
+  "sourceRepository": "AlexChaseJones/request-grove",
+  "sourceCommit": "c6eebc08d3a88e033849f1a4c325fbb27a4ecd5d",
+  "siteUrl": "https://bristlebristle.app",
+  "contact": "alexchasejones@icloud.com",
+  "downloads": [
+    { "arch": "arm64", "label": "Apple Silicon", "filename": "Bristle-0.1.11-mac-arm64.dmg", "sizeBytes": 132980558, "sha256": "a9d50433bb8ec4e91ce7b96a31512d4c1997458ee0bbe78bca964392845244f6" },
+    { "arch": "x64", "label": "Intel Mac", "filename": "Bristle-0.1.11-mac-x64.dmg", "sizeBytes": 138920271, "sha256": "c47beef7c4904ef662546c5fb2631284694a636846ec5dd86c2e5f6f58c67537" }
+  ],
+  "documents": [
+    { "label": "IT review packet (PDF)", "filename": "Bristle-0.1.11-IT-Review.pdf" },
+    { "label": "SHA-256 checksums", "filename": "Bristle-0.1.11-SHA256SUMS.txt" },
+    { "label": "Verification record (JSON)", "filename": "Bristle-0.1.11-Verification.json" },
+    { "label": "Signing evidence (ZIP)", "filename": "Bristle-0.1.11-Signing-Evidence.zip" }
+  ]
+}

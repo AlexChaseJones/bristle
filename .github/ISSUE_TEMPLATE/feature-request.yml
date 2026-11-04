@@ -1,0 +1,26 @@
+name: Workflow improvement
+description: Describe friction or a missing capability in your API workflow.
+title: "[Workflow] "
+body:
+  - type: markdown
+    attributes:
+      value: "Please describe the task you were trying to complete. This issue is public; keep examples free of secrets and customer data."
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What were you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: What got in the way?
+      description: If you switched back to another API client, tell us why.
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: What would a better experience look like?
+    validations:
+      required: true

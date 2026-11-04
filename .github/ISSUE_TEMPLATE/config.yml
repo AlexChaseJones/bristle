@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private support or security report
+    url: mailto:alexchasejones@icloud.com
+    about: Do not post security details or sensitive request data publicly.
+  - name: Getting started
+    url: https://bristlebristle.app/getting-started/
+    about: Installation, requests, drafts, environments, and imports.
