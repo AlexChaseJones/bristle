@@ -16,6 +16,11 @@ export function compareAssets(actual,expected,{complete=true}={}){
   }
   if(new Set(actual.map(a=>a.name)).size!==actual.length)throw new Error('Duplicate release asset');
 }
+export function validateSourceRelease(r,source,sourceObject){
+  if(source.draft||!source.prerelease||source.tag_name!==r.tag)throw new Error('Source must be the published beta release');
+  if(sourceObject.type!=='commit'||sourceObject.sha!==r.sourceCommit)throw new Error('Source release tag does not match the recorded application revision');
+  for(const d of r.downloads){const a=source.assets.find(a=>a.name===d.filename);if(!a||a.state!=='uploaded'||a.digest!==`sha256:${d.sha256}`||a.size!==d.sizeBytes)throw new Error('Binary differs from the verified private release');}
+}
 export async function inspectAssets(r,directory){
   const files=[];
   for(const name of assetNames(r)){
@@ -65,8 +70,9 @@ async function main(){
   const repo=api(`repos/${r.repository}`);
   if(repo.private||repo.full_name!==r.repository)throw new Error('Expected the dedicated public distribution repository');
   const source=api(`repos/${r.sourceRepository}/releases/tags/${r.tag}`);
-  if(source.draft||!source.prerelease)throw new Error('Source must be a published beta release');
-  for(const d of r.downloads){const a=source.assets.find(a=>a.name===d.filename);if(!a||a.digest!==`sha256:${d.sha256}`||a.size!==d.sizeBytes)throw new Error('Binary differs from the verified private release');}
+  let sourceObject=api(`repos/${r.sourceRepository}/git/ref/tags/${r.tag}`).object;
+  for(let depth=0;sourceObject.type==='tag'&&depth<10;depth++)sourceObject=api(`repos/${r.sourceRepository}/git/tags/${sourceObject.sha}`).object;
+  validateSourceRelease(r,source,sourceObject);
   let release=findRelease(r);
   if(release){if(!release.prerelease)throw new Error('Existing tag is not a beta release');compareAssets(release.assets,expected,{complete:!release.draft});}
   else {

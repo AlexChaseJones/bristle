@@ -1,11 +1,19 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadRelease, validateRelease } from '../scripts/release.mjs';
-import { compareAssets, inspectAssets } from '../scripts/promote-release.mjs';
+import { compareAssets, inspectAssets, validateSourceRelease } from '../scripts/promote-release.mjs';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const r=await loadRelease();
+test('source provenance must match the published private tag and uploaded binaries',()=>{
+  const source={tag_name:r.tag,prerelease:true,draft:false,assets:r.downloads.map(d=>({name:d.filename,state:'uploaded',digest:'sha256:'+d.sha256,size:d.sizeBytes}))};
+  const commit={type:'commit',sha:r.sourceCommit};
+  assert.doesNotThrow(()=>validateSourceRelease(r,source,commit));
+  assert.throws(()=>validateSourceRelease(r,source,{...commit,sha:'a'.repeat(40)}));
+  assert.throws(()=>validateSourceRelease(r,{...source,draft:true},commit));
+  assert.throws(()=>validateSourceRelease(r,{...source,assets:[]},commit));
+});
 test('rejects wrong version, duplicate architecture and path traversal before publication',()=>{
   for(const change of [{tag:'v0.1.11.-beta.1'},{tag:'v0.1.12-beta.1'},{downloads:[r.downloads[0],r.downloads[0]]},{documents:[...r.documents.slice(1),{filename:'../../private.txt'}]},{repository:r.sourceRepository}])assert.throws(()=>validateRelease({...r,...change}));
 });
