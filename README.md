@@ -10,7 +10,7 @@ This repository contains the public website, release documentation, downloadable
 
 ## Run the website locally
 
-Node 22 or newer is required. No dependency installation is needed.
+Node 22 or newer is required. Install the locked YAML parser used by release validation with `npm ci --ignore-scripts`.
 
 ```sh
 npm run check

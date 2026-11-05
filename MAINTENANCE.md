@@ -8,7 +8,7 @@
 
 ## Change or roll back the website
 
-1. Edit the site and run `npm run check` (Node 22+, no install needed).
+1. Edit the site and run `npm run check` (Node 22+; run `npm ci --ignore-scripts` first).
 2. Preview with `npm run preview`; inspect desktop/mobile, keyboard focus, zoom, and links. Screenshots must contain only synthetic data.
 3. Commit and push to `main`. The Pages workflow checks the site, uploads only `dist/`, and deploys after checks pass. Pull requests run checks without deployment.
 4. Verify the workflow's exact commit and visit the public HTTPS site.
@@ -28,7 +28,7 @@ The publishing CLI requires an authenticated GitHub CLI with read access to the 
 
 3. Update `site/release.json` to the verified version, beta tag, full source commit, final DMG filenames, sizes and SHA-256 hashes. Preserve the explicit source/public repository distinction.
 4. Review and update `RELEASE_NOTES.md`, the website's release notes/verification counts, and the staged IT PDF and verification JSON. Public download URLs must point here. Keep original Apple receipts and signing evidence unchanged. The verification JSON must contain `version`, `sourceCommit`, and `artifacts` identifying both filenames, sizes, and hashes.
-5. Regenerate the staged `Bristle-VERSION-SHA256SUMS.txt`: SHA-256, two spaces, basename, one entry per asset, excluding the manifest itself. The six permitted assets are the two DMGs, IT PDF, checksum manifest, verification JSON, and signing-evidence ZIP. Visually inspect all PDF pages after editing.
+5. Regenerate the staged `Bristle-VERSION-SHA256SUMS.txt`: SHA-256, two spaces, basename, one entry per asset, excluding the manifest itself. The base assets are the two DMGs, IT PDF, checksum manifest, verification JSON, and signing-evidence ZIP. Updater-enabled releases also require every asset declared in `updates`, as described below. Visually inspect all PDF pages after editing.
 6. Check the complete staged package:
 
    ```sh
@@ -45,7 +45,7 @@ The publishing CLI requires an authenticated GitHub CLI with read access to the 
    ```
 
    The script checks source release binary digests, local digests, the entire checksum manifest, provenance, and uploaded asset digests. It never uses `--clobber`. Identical published assets are accepted; conflicting, incomplete, or unexpected published assets cause failure. If upload is interrupted, rerun `release:draft` to upload only missing files.
-9. Merge the website metadata, verify the Pages deployment, then download all six public assets without credentials. Compare both DMGs with the approved hashes and all other assets with the manifest. Check the public IT packet links and confirm both architecture buttons work without login.
+9. Merge the website metadata, verify the Pages deployment, then download all declared public assets without credentials. Compare both DMGs with the approved hashes and all other assets with the manifest. Check the public IT packet links and confirm both architecture buttons work without login.
 
 The public tag identifies a publication commit. The app source SHA is recorded in the verification JSON and release metadata; do not claim the public tag identifies app source code.
 
@@ -71,3 +71,22 @@ Sources: [GitHub domain setup](https://docs.github.com/en/pages/configuring-a-cu
 ## Feedback and follow-up
 
 Share the beta guide with 3–5 developers. Collect a first-session report and a week-end summary. No automated outreach or monitoring is configured. Prioritize reproducible installation, data-loss, environment, and workflow failures. Keep unresolved performance and migration limits visible; no reference-machine certification is implied by release publication.
+
+## In-app update assets
+
+For a future updater-enabled release, add an `updates` array to the publication metadata. Copy the exact `updateAssets` entries from the private candidate, including `filename`, `sizeBytes` and `sha256`. Keep that same `updateAssets` array in the public verification JSON. Do not alter the currently published version or live metadata while preparing tooling changes.
+
+Required entries are the ARM and Intel `Bristle-VERSION-mac-ARCH.zip` files plus `latest-mac.yml` and `beta-mac.yml`. Include both ZIP blockmaps when generated. Both manifests must be identical, contain both architectures' ZIP/DMG entries, and match the final files' sizes and SHA-512 hashes. The private build helper refreshes DMG hashes after notarization/stapling. Do not regenerate metadata during promotion or copy DMG blockmaps, which the Mac updater does not use.
+
+Stage these files unchanged alongside the existing review documents and DMGs. Include every asset except the checksum manifest itself in `Bristle-VERSION-SHA256SUMS.txt`. The validators verify the complete asset list, manifest contents, public verification record, private-source release digests and uploaded bytes. An undeclared update payload, incomplete architecture pair, mismatched version or changed hash is rejected. Historical releases without updater metadata remain readable.
+
+Tags can be `vVERSION-beta.N` (prerelease) or `vVERSION` (stable); the source/public release flags must agree. Increase the numeric application version whenever binaries change. Changing only a beta tag cannot update an installed app with the same app version. The first updater-enabled version still requires manual installation for existing users.
+
+Focused tooling verification, with no website build, publication, or deployment:
+
+```sh
+npm ci --ignore-scripts
+node --test tests/release.test.mjs tests/update-artifacts.test.mjs
+```
+
+The website workflow installs the locked dependency before its existing checks. Editing these tools does not run that workflow or publish an app. Actual signed upgrade verification remains a separate release task.

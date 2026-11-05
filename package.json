@@ -11,6 +11,11 @@
     "release:draft": "node scripts/promote-release.mjs --draft",
     "release:publish": "node scripts/promote-release.mjs --publish"
   },
-  "engines": { "node": ">=22" },
-  "license": "MIT"
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.8.1"
+  }
 }

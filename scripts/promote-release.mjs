@@ -1,10 +1,11 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, stat, readdir } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadRelease, assetNames } from './release.mjs';
+import { inspectMacUpdateArtifacts } from './update-artifacts.mjs';
 
 export async function sha256(path){const hash=createHash('sha256');for await(const chunk of createReadStream(path))hash.update(chunk);return hash.digest('hex');}
 export function compareAssets(actual,expected,{complete=true}={}){
@@ -17,22 +18,30 @@ export function compareAssets(actual,expected,{complete=true}={}){
   if(new Set(actual.map(a=>a.name)).size!==actual.length)throw new Error('Duplicate release asset');
 }
 export function validateSourceRelease(r,source,sourceObject){
-  if(source.draft||!source.prerelease||source.tag_name!==r.tag)throw new Error('Source must be the published beta release');
+  if(source.draft||source.prerelease!==r.tag.includes('-beta.')||source.tag_name!==r.tag)throw new Error('Source must be the matching published release');
   if(sourceObject.type!=='commit'||sourceObject.sha!==r.sourceCommit)throw new Error('Source release tag does not match the recorded application revision');
-  for(const d of r.downloads){const a=source.assets.find(a=>a.name===d.filename);if(!a||a.state!=='uploaded'||a.digest!==`sha256:${d.sha256}`||a.size!==d.sizeBytes)throw new Error('Binary differs from the verified private release');}
+  for(const d of [...r.downloads,...(r.updates??[])]){const a=source.assets.find(a=>a.name===d.filename);if(!a||a.state!=='uploaded'||a.digest!==`sha256:${d.sha256}`||a.size!==d.sizeBytes)throw new Error('Binary differs from the verified private release');}
 }
 export async function inspectAssets(r,directory){
   const files=[];
+  const names=await readdir(directory);
+  if(names.length!==assetNames(r).length||names.some(name=>!assetNames(r).includes(name)))throw new Error('Unexpected or missing staged release assets');
   for(const name of assetNames(r)){
     const path=resolve(directory,name);
     const file=await stat(path);
     if(!file.isFile())throw new Error(`Not a regular release asset: ${name}`);
     files.push({name,path,size:file.size,sha256:await sha256(path)});
   }
-  for(const d of r.downloads){const a=files.find(a=>a.name===d.filename);if(a.sha256!==d.sha256||a.size!==d.sizeBytes)throw new Error(`Signed binary identity mismatch: ${d.filename}`);}
+  for(const d of [...r.downloads,...(r.updates??[])]){const a=files.find(a=>a.name===d.filename);if(a.sha256!==d.sha256||a.size!==d.sizeBytes)throw new Error(`Signed binary identity mismatch: ${d.filename}`);}
   const record=JSON.parse(await readFile(resolve(directory,`Bristle-${r.version}-Verification.json`),'utf8'));
   if(record.sourceCommit!==r.sourceCommit||record.version!==r.version)throw new Error('Application provenance mismatch');
-  for(const d of r.downloads){if(!record.artifacts.some(a=>a.filename===d.filename&&a.sha256===d.sha256&&a.sizeBytes===d.sizeBytes))throw new Error('Verification record does not identify both binaries');}
+  for(const d of [...r.downloads,...(r.updates??[])]){if(![...(record.artifacts??[]),...(record.updateAssets??[])].some(a=>a.filename===d.filename&&a.sha256===d.sha256&&a.sizeBytes===d.sizeBytes))throw new Error('Verification record does not identify both binaries');}
+  if(r.updates){
+    const updates=await inspectMacUpdateArtifacts(directory,r.version);
+    for(const list of [r.updates,record.updateAssets]){
+      if(!Array.isArray(list)||list.length!==updates.length||updates.some(a=>!list.some(b=>b.filename===a.filename&&b.sha256===a.sha256&&b.sizeBytes===a.sizeBytes)))throw new Error('Update assets do not match release provenance');
+    }
+  }
   const checksumName=`Bristle-${r.version}-SHA256SUMS.txt`;
   const manifest=(await readFile(resolve(directory,checksumName),'utf8')).trim().split(/\r?\n/).map(line=>{
     const match=/^([0-9a-f]{64})  ([A-Za-z0-9.-]+)$/.exec(line);if(!match)throw new Error('Invalid checksum manifest');return {sha256:match[1],name:match[2]};
@@ -74,14 +83,14 @@ async function main(){
   for(let depth=0;sourceObject.type==='tag'&&depth<10;depth++)sourceObject=api(`repos/${r.sourceRepository}/git/tags/${sourceObject.sha}`).object;
   validateSourceRelease(r,source,sourceObject);
   let release=findRelease(r);
-  if(release){if(!release.prerelease)throw new Error('Existing tag is not a beta release');compareAssets(release.assets,expected,{complete:!release.draft});}
+  if(release){if(release.prerelease!==r.tag.includes('-beta.'))throw new Error('Existing release channel does not match');compareAssets(release.assets,expected,{complete:!release.draft});}
   else {
     if(modes[0]!=='--draft')throw new Error('Create and verify the draft first');
     const local=spawnSync('git',['rev-parse','HEAD'],{encoding:'utf8',windowsHide:true});
     if(local.status!==0)throw new Error('Public repository must have a committed publication snapshot');
     const sha=local.stdout.trim();
     const remote=api(`repos/${r.repository}/commits/${sha}`);if(remote.sha!==sha)throw new Error('Push the publication snapshot first');
-    gh(['release','create',r.tag,'--repo',r.repository,'--target',sha,'--title',`Bristle ${r.label}`,'--notes-file',resolve('RELEASE_NOTES.md'),'--draft','--prerelease','--latest=false']);
+    gh(['release','create',r.tag,'--repo',r.repository,'--target',sha,'--title',`Bristle ${r.label}`,'--notes-file',resolve('RELEASE_NOTES.md'),'--draft',...(r.tag.includes('-beta.')?['--prerelease','--latest=false']:['--latest=true'])]);
     release=findRelease(r);
     if(!release)throw new Error('Draft creation returned without a discoverable release; inspect GitHub before retrying');
   }
@@ -92,7 +101,7 @@ async function main(){
   release=api(`repos/${r.repository}/releases/${release.id}`);
   compareAssets(release.assets,expected);
   if(release.draft&&modes[0]==='--publish'){
-    gh(['release','edit',r.tag,'--repo',r.repository,'--draft=false','--prerelease','--latest=false']);
+    gh(['release','edit',r.tag,'--repo',r.repository,'--draft=false',...(r.tag.includes('-beta.')?['--prerelease','--latest=false']:['--prerelease=false','--latest=true'])]);
     release=api(`repos/${r.repository}/releases/${release.id}`);compareAssets(release.assets,expected);
   }
   console.log(JSON.stringify({url:release.html_url,tag:release.tag_name,draft:release.draft,assets:release.assets.map(a=>({name:a.name,digest:a.digest,size:a.size})),applicationSourceCommit:r.sourceCommit,publicationCommit:release.target_commitish},null,2));
