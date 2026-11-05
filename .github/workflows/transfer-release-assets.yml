@@ -1,0 +1,32 @@
+name: Transfer verified release assets
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing draft release tag matching this branch's release.json
+        required: true
+      asset_urls:
+        description: JSON array of filename and temporary GitHub asset URL pairs
+        required: true
+permissions:
+  contents: write
+concurrency:
+  group: transfer-${{ inputs.tag }}
+  cancel-in-progress: false
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node scripts/transfer-release-assets.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_ASSET_URLS: ${{ inputs.asset_urls }}
