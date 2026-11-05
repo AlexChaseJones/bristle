@@ -1,32 +1,34 @@
-# Bristle 0.2.1 Beta 1
+# Bristle 0.2.2 Beta 1
 
-This patch fixes Postman collection discovery when Postman returns an HTTP 500 for a workspace. It keeps the 0.2 features and provides signed Mac downloads for Apple Silicon and Intel.
+Bristle can now check for updates and download newer Mac releases from inside the app.
 
-## Install
+## Install this release once
 
-- **Apple Silicon (M-series):** download `Bristle-0.2.1-mac-arm64.dmg`.
-- **Intel Mac:** download `Bristle-0.2.1-mac-x64.dmg`.
-- Quit Bristle, open the DMG, replace Bristle in Applications, and launch through Finder.
+- **Apple Silicon:** download `Bristle-0.2.2-mac-arm64.dmg`.
+- **Intel Mac:** download `Bristle-0.2.2-mac-x64.dmg`.
+- Quit Bristle, open the DMG, replace Bristle in Applications, and launch it.
 
-Both the app and disk image are Developer ID-signed, Apple-notarized and stapled. Updates are manual. The SHA-256 manifest identifies every other release asset.
+Existing users need this one manual installation because earlier versions do not contain an updater. Both Mac applications and disk images are Developer ID-signed, Apple-notarized and stapled.
 
-## Fixed in 0.2.1
+## In-app updates
 
-- Recover from Postman workspace-listing server errors through the account collection index.
-- Verify each collection belongs to the selected workspace before offering it for import; keep environments scoped to that workspace.
-- Show collection-discovery progress and retain cancellation. Authentication and permission failures still stop with an error.
+- Bristle checks the public GitHub release feed 30 seconds after the workspace opens, then every six hours while running.
+- Newer beta and stable releases download automatically. Settings → Updates shows the installed version, status, progress, Check for Updates, and Retry.
+- Choose **Restart to update** in Settings or the header when ready. The confirmation explains that active work will stop. Drafts and UI state must be saved successfully before shutdown.
+- Ordinary quit does not install an update. Failed checks, downloads or verification leave the running app available and report an error.
+- Development builds and other platforms show an unavailable state. No GitHub account or token is needed.
 
-To use the fix, open guided Postman migration, connect with your Postman API key, select the affected workspace, then choose collections. Discovery may take longer when the fallback is needed. Collection sharing is not required for resources your account can access.
+This release includes the 0.2.1 Postman workspace-discovery correction and the existing collection, environment, draft, import and scripting features.
 
 ## Verification and limits
 
-Application tests and typechecking were intentionally skipped for 0.2.1 at the maintainer's request. No unit, desktop, installed-app or startup suites were run. Prior 0.2.0 passing results do not validate the changed 0.2.1 binaries, and the patched migration has not been exercised end to end.
+Typechecking and the production build passed. Domain tests: **238 passed, 3 skipped**. Source-only desktop fixtures: **7 passed**. Apple Silicon installed checks: **28 passed, 3 platform skips**. Intel installed smoke checks through Rosetta 2: **3 passed, 3 platform skips**.
 
-Compilation, architecture, Developer ID signatures, the expected Apple Team ID, Gatekeeper assessments, accepted notarization submissions and stapled tickets were checked for both installers. Published file hashes match the staged release assets.
+Architecture, Developer ID identity, Gatekeeper, accepted notarization and stapled tickets were verified for both installers. The updater ZIPs, channel manifests and generated blockmaps are included in the complete SHA-256 manifest. Public payloads match the verified private release bytes.
 
-Physical Intel hardware, a fresh browser-to-Finder installation, existing-profile/unsigned-to-signed Keychain migration, real-account migration through the patched app, independent security review, native assistive technology and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved. Windows/Linux downloads and automatic updates are not included.
+Slow memory/performance and broad accessibility diagnostics are opt-in and were not run. A real signed old-version-to-new-version in-app installation, physical Intel hardware, a fresh browser-to-Finder installation, existing-profile/unsigned-to-signed Keychain migration, real-account Postman migration, independent security review, native assistive technology and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved. Windows/Linux public installers are not included.
 
-The IT packet, verification JSON and signing-evidence ZIP identify the exact files and scope. Application source revision: `b096f19d0d7de621ee026c0329e80989667dbab5`. The source stays private; this public tag identifies the publication documents.
+The IT packet, verification JSON and signing-evidence ZIP identify the exact files and scope. Application source revision: `9a00fd05f35e453280869e23f1d64ce318e6792f`; verification revision: `b91e25db8f59d4a7a2280a19dc3eb8e43d95d8ed`. App source stays private; the public tag identifies the publication documents.
 
 **[Get started](https://bristlebristle.app/getting-started/) · [Beta guide](https://bristlebristle.app/beta-guide/) · [Report a bug](https://github.com/AlexChaseJones/bristle/issues/new?template=bug-report.yml)**
 

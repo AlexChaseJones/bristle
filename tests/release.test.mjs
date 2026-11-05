@@ -1,13 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadRelease, validateRelease } from '../scripts/release.mjs';
+import { loadRelease, validateRelease, assetNames } from '../scripts/release.mjs';
 import { compareAssets, inspectAssets, validateSourceRelease } from '../scripts/promote-release.mjs';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const r=await loadRelease();
 test('source provenance must match the published private tag and uploaded binaries',()=>{
-  const source={tag_name:r.tag,prerelease:true,draft:false,assets:r.downloads.map(d=>({name:d.filename,state:'uploaded',digest:'sha256:'+d.sha256,size:d.sizeBytes}))};
+  const source={tag_name:r.tag,prerelease:true,draft:false,assets:[...r.downloads,...(r.updates??[])].map(d=>({name:d.filename,state:'uploaded',digest:'sha256:'+d.sha256,size:d.sizeBytes}))};
   const commit={type:'commit',sha:r.sourceCommit};
   assert.doesNotThrow(()=>validateSourceRelease(r,source,commit));
   assert.throws(()=>validateSourceRelease(r,source,{...commit,sha:'a'.repeat(40)}));
@@ -30,7 +30,7 @@ test('existing assets may be reused only with identical size and digest',()=>{
 test('tampered local installer is rejected before network or upload',async()=>{
   const directory=await mkdtemp(join(tmpdir(),'bristle-release-test-'));
   try{
-    for(const a of [...r.downloads,...r.documents])await writeFile(join(directory,a.filename),'changed');
+    for(const name of assetNames(r))await writeFile(join(directory,name),'changed');
     await assert.rejects(inspectAssets(r,directory),/Signed binary identity mismatch/);
   }finally{
     if(!directory.startsWith(join(tmpdir(),'bristle-release-test-')))throw new Error('Unexpected test cleanup path');

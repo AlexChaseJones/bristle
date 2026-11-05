@@ -1,46 +1,78 @@
 {
   "product": "Bristle",
-  "version": "0.2.1",
-  "tag": "v0.2.1-beta.1",
-  "label": "0.2.1 Beta 1",
+  "version": "0.2.2",
+  "tag": "v0.2.2-beta.1",
+  "label": "0.2.2 Beta 1",
   "date": "2026-11-05",
   "repository": "AlexChaseJones/bristle",
   "sourceRepository": "AlexChaseJones/request-grove",
-  "sourceCommit": "b096f19d0d7de621ee026c0329e80989667dbab5",
+  "sourceCommit": "9a00fd05f35e453280869e23f1d64ce318e6792f",
   "siteUrl": "https://bristlebristle.app",
   "contact": "alexchasejones@icloud.com",
   "downloads": [
     {
       "arch": "arm64",
-      "filename": "Bristle-0.2.1-mac-arm64.dmg",
-      "sizeBytes": 131674975,
-      "sha256": "450c1df8a856562ed6393c61dc03bed93ac2b60a145572745fcf2f8fb21e8107",
+      "filename": "Bristle-0.2.2-mac-arm64.dmg",
+      "sizeBytes": 132215683,
+      "sha256": "dd9312bb08f7d7e741aa1813e0be427c45c99885fdd65c2404c68411597bddd7",
       "label": "Apple Silicon"
     },
     {
       "arch": "x64",
-      "filename": "Bristle-0.2.1-mac-x64.dmg",
-      "sizeBytes": 138908809,
-      "sha256": "37d07c99da377e27ec6167939c34a318761f95110112bd717efde0bacbbfbe54",
+      "filename": "Bristle-0.2.2-mac-x64.dmg",
+      "sizeBytes": 139439790,
+      "sha256": "dcf0bfe5a662233a9547d11f8e7c74e1896be72e2239014b28411ee52e502ed2",
       "label": "Intel Mac"
     }
   ],
   "documents": [
     {
       "label": "IT review packet (PDF)",
-      "filename": "Bristle-0.2.1-IT-Review.pdf"
+      "filename": "Bristle-0.2.2-IT-Review.pdf"
     },
     {
       "label": "SHA-256 checksums",
-      "filename": "Bristle-0.2.1-SHA256SUMS.txt"
+      "filename": "Bristle-0.2.2-SHA256SUMS.txt"
     },
     {
       "label": "Verification record (JSON)",
-      "filename": "Bristle-0.2.1-Verification.json"
+      "filename": "Bristle-0.2.2-Verification.json"
     },
     {
       "label": "Signing evidence (ZIP)",
-      "filename": "Bristle-0.2.1-Signing-Evidence.zip"
+      "filename": "Bristle-0.2.2-Signing-Evidence.zip"
+    }
+  ],
+  "updates": [
+    {
+      "filename": "Bristle-0.2.2-mac-arm64.zip",
+      "sizeBytes": 127578604,
+      "sha256": "5e2512a20aa3630ac764e370e56ee32136dc4b82c1dffe80af4d07256efb1f01"
+    },
+    {
+      "filename": "Bristle-0.2.2-mac-arm64.zip.blockmap",
+      "sizeBytes": 134692,
+      "sha256": "2d402dd09f0de2e4f70d072d2c7f2d33fcfb963b27a98a6f7d5c6fdd1e7afdfa"
+    },
+    {
+      "filename": "Bristle-0.2.2-mac-x64.zip",
+      "sizeBytes": 134804011,
+      "sha256": "a75d7563ef4fd5a92e8257559496f3f48b59478719bfff73e746529e67cbc9ff"
+    },
+    {
+      "filename": "Bristle-0.2.2-mac-x64.zip.blockmap",
+      "sizeBytes": 141040,
+      "sha256": "ec6af3419d762301e1812d4c3b8ec38e96bcdb0b4764b6846634d53a552b7e81"
+    },
+    {
+      "filename": "beta-mac.yml",
+      "sizeBytes": 781,
+      "sha256": "e372f6c16528b6b3324d610296f24dac971211413373d6b590db05dfec634c53"
+    },
+    {
+      "filename": "latest-mac.yml",
+      "sizeBytes": 781,
+      "sha256": "e372f6c16528b6b3324d610296f24dac971211413373d6b590db05dfec634c53"
     }
   ]
 }
