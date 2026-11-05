@@ -30,3 +30,11 @@ Issues are public. Remove secrets, customer data, and internal endpoints before 
 The release includes an IT review PDF, final SHA-256 checksums, verification JSON, and signing evidence. [Release notes and limits](https://bristlebristle.app/releases/) describe what has and has not been verified. Signing and notarization do not constitute employer approval.
 
 The app and website retain the MIT license. Dependency notices are bundled inside the app. [Maintenance and release procedure](MAINTENANCE.md) explains publication, rollback, and domain configuration.
+
+### Optional transfer for a slow upload connection
+
+The manual **Transfer verified release assets** workflow copies installer and updater bytes to an existing public draft. It does not build applications, run desktop tests, publish a release, or change website metadata. This avoids uploading the same large packages from the release Mac twice.
+
+Create the public draft against the committed publication branch and upload its four small review documents first. Obtain temporary `release-assets.githubusercontent.com` download URLs for the approved private-release installers and updater assets through the authenticated GitHub asset API. Run the workflow against that publication branch with `tag` and `asset_urls` (a JSON array of `{ "filename": "...", "url": "..." }`). Only pass URLs for assets intended for public distribution; never pass account tokens or private test evidence. The runner uses its existing repository-scoped GitHub token to upload.
+
+Every transferred file must match `site/release.json`, the verification record, updater manifests and complete checksums. Existing draft files must match exactly. The workflow leaves the draft unpublished; finish with the existing `npm run release:publish -- --assets DIRECTORY` command, which separately verifies the published private source tag and uploaded bytes. Run `npm run check` to test the transfer input restrictions and release validators.
