@@ -1,31 +1,33 @@
-# Bristle 0.1.11 Beta 1
+# Bristle 0.2.0 Beta 1
 
-Bristle is a local API client that groups open requests by collection, preserves recoverable drafts, and makes environment selection explicit. This public Mac beta is free to download and use without an app account.
+Bristle 0.2 adds clearer variable previews, keyboard-friendly controls, persistent request ordering and guided Postman migration. Both signed Mac downloads are available without an app account.
 
 ## Install
 
-- **Apple Silicon (M-series):** download `Bristle-0.1.11-mac-arm64.dmg`.
-- **Intel Mac:** download `Bristle-0.1.11-mac-x64.dmg`.
+- **Apple Silicon (M-series):** download `Bristle-0.2.0-mac-arm64.dmg`.
+- **Intel Mac:** download `Bristle-0.2.0-mac-x64.dmg`.
 - Open the DMG, copy Bristle into Applications, and launch through Finder.
 
-Both app and DMG are Developer ID-signed, Apple-notarized, and stapled. Updates are manual. The attached SHA-256 manifest identifies every other release asset.
+Both the app and disk image are Developer ID-signed, Apple-notarized and stapled. Updates are manual. The attached SHA-256 manifest identifies every other release asset.
 
-## In this build
+## Changes in 0.2
 
-- Collection-specific working sets, previews, recoverable drafts, and explicit saves.
-- Named environments, local secret references, and header/variable completion.
-- OpenAPI/Postman import, reviewed scripting, response comparisons, and local mocks.
-- The approved quiet visual design and simplified hedgehog icon.
+- Inline variable decorations and active-environment previews keep nested secrets masked.
+- Themed dropdowns support keyboard selection and Escape; tabbed dialogs retain their height.
+- Drag and keyboard request reordering persists across restart and portable export/import.
+- New collections default to local app data, with a custom folder still available.
+- Guided Postman migration offers preview, workspace selection, cancellation and partial retry. File import remains available.
+- Large-response previews avoid unnecessary whole-buffer copies. Script execution deadlines start after worker initialization.
 
-These are the same verified signed binaries previously distributed in the private beta. The app still shows its existing “ALPHA” badge. The public release updates distribution and documentation, not application behavior.
+## Verification and limits
 
-## Verification and known limits
+The exact application revision passed 204 unit tests and 38 source desktop workflows. Each signed installer passed a fresh-profile startup check and 31 installed workflows. Apple Silicon ran natively; Intel ran through Rosetta 2 on the same Apple Silicon Mac. Intel coverage combines retained passes, test wait and selector corrections, and the remaining workflows in separate batches. Earlier failed attempts, including a zoom-dialog closure during reported operator interaction before a complete focused pass, are preserved in private evidence; these counts do not claim a single uninterrupted passing Intel suite. Skipped cases are excluded.
 
-Both Mac architectures passed 159 domain tests, 31 source workflows, one installed startup check, and 26 installed workflows. Signature, Gatekeeper, notarization, and stapled-ticket checks passed. Skipped cases are excluded from these counts.
+Developer ID signatures, expected Apple Team ID, Gatekeeper assessments, accepted notarization submissions and stapled tickets passed for both architectures. The published binaries match the private verified release byte for byte.
 
-Fresh browser-to-Finder installation on a personal Mac, unsigned-to-signed Keychain migration, independent security review, native assistive-technology review, and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved. Windows/Linux downloads and automatic updates are not included. Signing is not employer approval.
+Physical Intel hardware, a fresh browser-to-Finder installation, existing-profile/unsigned-to-signed Keychain migration, real-account Postman migration, independent security review, native assistive technology and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved; this is not a claim of lower memory use than other clients. Windows/Linux downloads and automatic updates are not included.
 
-The attached IT packet, verification JSON, and signing evidence describe the scope. Original application source revision: `c6eebc08d3a88e033849f1a4c325fbb27a4ecd5d`. The app source stays private; this public tag points to publication documents.
+The IT packet, verification JSON and signing-evidence ZIP identify the exact files and scope. Application source revision: `3470ee70468b4b478f511a8ee3194c5a1515fb9e`. The source stays private; this public tag identifies the publication documents.
 
 **[Get started](https://bristlebristle.app/getting-started/) · [Beta guide](https://bristlebristle.app/beta-guide/) · [Report a bug](https://github.com/AlexChaseJones/bristle/issues/new?template=bug-report.yml)**
 

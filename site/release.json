@@ -1,22 +1,46 @@
 {
   "product": "Bristle",
-  "version": "0.1.11",
-  "tag": "v0.1.11-beta.1",
-  "label": "0.1.11 Beta 1",
-  "date": "2026-11-04",
+  "version": "0.2.0",
+  "tag": "v0.2.0-beta.1",
+  "label": "0.2.0 Beta 1",
+  "date": "2026-11-05",
   "repository": "AlexChaseJones/bristle",
   "sourceRepository": "AlexChaseJones/request-grove",
-  "sourceCommit": "c6eebc08d3a88e033849f1a4c325fbb27a4ecd5d",
+  "sourceCommit": "3470ee70468b4b478f511a8ee3194c5a1515fb9e",
   "siteUrl": "https://bristlebristle.app",
   "contact": "alexchasejones@icloud.com",
   "downloads": [
-    { "arch": "arm64", "label": "Apple Silicon", "filename": "Bristle-0.1.11-mac-arm64.dmg", "sizeBytes": 132980558, "sha256": "a9d50433bb8ec4e91ce7b96a31512d4c1997458ee0bbe78bca964392845244f6" },
-    { "arch": "x64", "label": "Intel Mac", "filename": "Bristle-0.1.11-mac-x64.dmg", "sizeBytes": 138920271, "sha256": "c47beef7c4904ef662546c5fb2631284694a636846ec5dd86c2e5f6f58c67537" }
+    {
+      "arch": "arm64",
+      "label": "Apple Silicon",
+      "filename": "Bristle-0.2.0-mac-arm64.dmg",
+      "sizeBytes": 131674427,
+      "sha256": "0318de25131ac1324e19fd0f63ea28e5a2a78a5d9ffe768871f59a309561d7dd"
+    },
+    {
+      "arch": "x64",
+      "label": "Intel Mac",
+      "filename": "Bristle-0.2.0-mac-x64.dmg",
+      "sizeBytes": 138909012,
+      "sha256": "c6fcf0e080934b7e43e392b1300bb7f41694de000777bc7767d8fe023cf4bba6"
+    }
   ],
   "documents": [
-    { "label": "IT review packet (PDF)", "filename": "Bristle-0.1.11-IT-Review.pdf" },
-    { "label": "SHA-256 checksums", "filename": "Bristle-0.1.11-SHA256SUMS.txt" },
-    { "label": "Verification record (JSON)", "filename": "Bristle-0.1.11-Verification.json" },
-    { "label": "Signing evidence (ZIP)", "filename": "Bristle-0.1.11-Signing-Evidence.zip" }
+    {
+      "label": "IT review packet (PDF)",
+      "filename": "Bristle-0.2.0-IT-Review.pdf"
+    },
+    {
+      "label": "SHA-256 checksums",
+      "filename": "Bristle-0.2.0-SHA256SUMS.txt"
+    },
+    {
+      "label": "Verification record (JSON)",
+      "filename": "Bristle-0.2.0-Verification.json"
+    },
+    {
+      "label": "Signing evidence (ZIP)",
+      "filename": "Bristle-0.2.0-Signing-Evidence.zip"
+    }
   ]
 }
