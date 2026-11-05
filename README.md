@@ -2,9 +2,9 @@
 
 Your API work, in focus. A local API client with collection-specific working sets, recoverable drafts, and named environments.
 
-**[Website](https://bristlebristle.app) · [Download the Mac beta](https://github.com/AlexChaseJones/bristle/releases/tag/v0.2.2-beta.1) · [Get started](https://bristlebristle.app/getting-started/) · [Report a bug](https://github.com/AlexChaseJones/bristle/issues/new?template=bug-report.yml)**
+**[Website](https://bristlebristle.app) · [Download the Mac beta](https://github.com/AlexChaseJones/bristle/releases/tag/v0.2.4-beta.1) · [Get started](https://bristlebristle.app/getting-started/) · [Report a bug](https://github.com/AlexChaseJones/bristle/issues/new?template=bug-report.yml)**
 
-Free during beta. No app account or payment required. Apple Silicon and Intel downloads are Developer ID-signed and Apple-notarized. Install 0.2.2 manually once to enable future in-app updates. Newer releases download in the background and install only when you choose Restart to update.
+Free during beta. No app account or payment required. Apple Silicon and Intel downloads are Developer ID-signed and Apple-notarized. Versions before 0.2.2 need one manual installation of the current release to enable in-app updates. Newer releases download in the background and install only when you choose Restart to update.
 
 This repository contains the public website, release documentation, downloadable beta assets, and feedback tracker. **It does not contain the desktop application's source code**, which remains private. The public release tag identifies publication documents; the verification record separately identifies the app source revision.
 

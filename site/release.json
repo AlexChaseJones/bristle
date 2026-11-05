@@ -1,78 +1,88 @@
 {
   "product": "Bristle",
-  "version": "0.2.2",
-  "tag": "v0.2.2-beta.1",
-  "label": "0.2.2 Beta 1",
+  "version": "0.2.4",
+  "tag": "v0.2.4-beta.1",
+  "label": "0.2.4 Beta 1",
   "date": "2026-11-05",
   "repository": "AlexChaseJones/bristle",
   "sourceRepository": "AlexChaseJones/request-grove",
-  "sourceCommit": "9a00fd05f35e453280869e23f1d64ce318e6792f",
+  "sourceCommit": "57c1901f4938ecca881d1c5ed8a7bf0fd274b7c7",
   "siteUrl": "https://bristlebristle.app",
   "contact": "alexchasejones@icloud.com",
   "downloads": [
     {
       "arch": "arm64",
-      "filename": "Bristle-0.2.2-mac-arm64.dmg",
-      "sizeBytes": 132215683,
-      "sha256": "dd9312bb08f7d7e741aa1813e0be427c45c99885fdd65c2404c68411597bddd7",
+      "filename": "Bristle-0.2.4-mac-arm64.dmg",
+      "sizeBytes": 132191901,
+      "sha256": "2606b06e19e9688f99d78534ab6baa82e1ec1d61c624ece091b6b465deb5f5b1",
       "label": "Apple Silicon"
     },
     {
       "arch": "x64",
-      "filename": "Bristle-0.2.2-mac-x64.dmg",
-      "sizeBytes": 139439790,
-      "sha256": "dcf0bfe5a662233a9547d11f8e7c74e1896be72e2239014b28411ee52e502ed2",
+      "filename": "Bristle-0.2.4-mac-x64.dmg",
+      "sizeBytes": 139423629,
+      "sha256": "d43e9e3c4e34fe1ded4f0d18ff4c9e1387bdd9e35ce7a3032809419a90f1d481",
       "label": "Intel Mac"
     }
   ],
   "documents": [
     {
       "label": "IT review packet (PDF)",
-      "filename": "Bristle-0.2.2-IT-Review.pdf"
+      "filename": "Bristle-0.2.4-IT-Review.pdf"
     },
     {
       "label": "SHA-256 checksums",
-      "filename": "Bristle-0.2.2-SHA256SUMS.txt"
+      "filename": "Bristle-0.2.4-SHA256SUMS.txt"
     },
     {
       "label": "Verification record (JSON)",
-      "filename": "Bristle-0.2.2-Verification.json"
+      "filename": "Bristle-0.2.4-Verification.json"
     },
     {
       "label": "Signing evidence (ZIP)",
-      "filename": "Bristle-0.2.2-Signing-Evidence.zip"
+      "filename": "Bristle-0.2.4-Signing-Evidence.zip"
     }
   ],
   "updates": [
     {
-      "filename": "Bristle-0.2.2-mac-arm64.zip",
-      "sizeBytes": 127578604,
-      "sha256": "5e2512a20aa3630ac764e370e56ee32136dc4b82c1dffe80af4d07256efb1f01"
+      "filename": "Bristle-0.2.4-mac-arm64.zip",
+      "sizeBytes": 127594284,
+      "sha256": "a8278a58a55da38b9bf987ea58b43d1783c7d7524f8a148a49f591442eb23e07"
     },
     {
-      "filename": "Bristle-0.2.2-mac-arm64.zip.blockmap",
-      "sizeBytes": 134692,
-      "sha256": "2d402dd09f0de2e4f70d072d2c7f2d33fcfb963b27a98a6f7d5c6fdd1e7afdfa"
+      "filename": "Bristle-0.2.4-mac-arm64.zip.blockmap",
+      "sizeBytes": 134475,
+      "sha256": "fff94f120cbbbd1f530c3ee27e252f4fe315f9dc7ed8acbded3b9694e4bee090"
     },
     {
-      "filename": "Bristle-0.2.2-mac-x64.zip",
-      "sizeBytes": 134804011,
-      "sha256": "a75d7563ef4fd5a92e8257559496f3f48b59478719bfff73e746529e67cbc9ff"
+      "filename": "Bristle-0.2.4-mac-x64.zip",
+      "sizeBytes": 134819701,
+      "sha256": "9bc98111a6fa97340b7efe0071a3831024a9a0b29cf511af0fd13248c6bf4935"
     },
     {
-      "filename": "Bristle-0.2.2-mac-x64.zip.blockmap",
-      "sizeBytes": 141040,
-      "sha256": "ec6af3419d762301e1812d4c3b8ec38e96bcdb0b4764b6846634d53a552b7e81"
+      "filename": "Bristle-0.2.4-mac-x64.zip.blockmap",
+      "sizeBytes": 140751,
+      "sha256": "d08e51550f74ef8bfc23f26aeb05bad9b7c365074833bb059fdc9361685ca62c"
     },
     {
       "filename": "beta-mac.yml",
       "sizeBytes": 781,
-      "sha256": "e372f6c16528b6b3324d610296f24dac971211413373d6b590db05dfec634c53"
+      "sha256": "a3acb180e4777f7d83e3ad4ebec212ab3ba5664a0ebd06e8a44ed83fa075b3ed"
     },
     {
       "filename": "latest-mac.yml",
       "sizeBytes": 781,
-      "sha256": "e372f6c16528b6b3324d610296f24dac971211413373d6b590db05dfec634c53"
+      "sha256": "a3acb180e4777f7d83e3ad4ebec212ab3ba5664a0ebd06e8a44ed83fa075b3ed"
     }
+  ],
+  "releaseNotes": [
+    "Mac beta release with signed Apple Silicon and Intel installers, in-app updates, and the verification results below."
+  ],
+  "releaseScope": [
+    "Typechecking and production build passed. Domain tests: 282 passed, 3 skipped.",
+    "Visible source and packaged UI tests were not requested. Application startup, desktop workflows and the packaged updater check were not exercised on either architecture.",
+    "Both Mac installers passed architecture, Developer ID/team, Gatekeeper, notarization and stapled-ticket checks. Updater ZIPs, channel manifests and blockmaps are included in the checksums.",
+    "A real signed in-app old-to-new installation, fresh browser/Finder installation, existing-profile/unsigned-to-signed Keychain migration and real-account Postman migration remain unverified.",
+    "Independent security review, native assistive-technology review and reference-hardware performance certification remain separate tasks. Windows/Linux public installers are not included."
   ]
 }
