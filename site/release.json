@@ -1,46 +1,46 @@
 {
   "product": "Bristle",
-  "version": "0.2.0",
-  "tag": "v0.2.0-beta.1",
-  "label": "0.2.0 Beta 1",
+  "version": "0.2.1",
+  "tag": "v0.2.1-beta.1",
+  "label": "0.2.1 Beta 1",
   "date": "2026-11-05",
   "repository": "AlexChaseJones/bristle",
   "sourceRepository": "AlexChaseJones/request-grove",
-  "sourceCommit": "3470ee70468b4b478f511a8ee3194c5a1515fb9e",
+  "sourceCommit": "b096f19d0d7de621ee026c0329e80989667dbab5",
   "siteUrl": "https://bristlebristle.app",
   "contact": "alexchasejones@icloud.com",
   "downloads": [
     {
       "arch": "arm64",
-      "label": "Apple Silicon",
-      "filename": "Bristle-0.2.0-mac-arm64.dmg",
-      "sizeBytes": 131674427,
-      "sha256": "0318de25131ac1324e19fd0f63ea28e5a2a78a5d9ffe768871f59a309561d7dd"
+      "filename": "Bristle-0.2.1-mac-arm64.dmg",
+      "sizeBytes": 131674975,
+      "sha256": "450c1df8a856562ed6393c61dc03bed93ac2b60a145572745fcf2f8fb21e8107",
+      "label": "Apple Silicon"
     },
     {
       "arch": "x64",
-      "label": "Intel Mac",
-      "filename": "Bristle-0.2.0-mac-x64.dmg",
-      "sizeBytes": 138909012,
-      "sha256": "c6fcf0e080934b7e43e392b1300bb7f41694de000777bc7767d8fe023cf4bba6"
+      "filename": "Bristle-0.2.1-mac-x64.dmg",
+      "sizeBytes": 138908809,
+      "sha256": "37d07c99da377e27ec6167939c34a318761f95110112bd717efde0bacbbfbe54",
+      "label": "Intel Mac"
     }
   ],
   "documents": [
     {
       "label": "IT review packet (PDF)",
-      "filename": "Bristle-0.2.0-IT-Review.pdf"
+      "filename": "Bristle-0.2.1-IT-Review.pdf"
     },
     {
       "label": "SHA-256 checksums",
-      "filename": "Bristle-0.2.0-SHA256SUMS.txt"
+      "filename": "Bristle-0.2.1-SHA256SUMS.txt"
     },
     {
       "label": "Verification record (JSON)",
-      "filename": "Bristle-0.2.0-Verification.json"
+      "filename": "Bristle-0.2.1-Verification.json"
     },
     {
       "label": "Signing evidence (ZIP)",
-      "filename": "Bristle-0.2.0-Signing-Evidence.zip"
+      "filename": "Bristle-0.2.1-Signing-Evidence.zip"
     }
   ]
 }

@@ -1,33 +1,32 @@
-# Bristle 0.2.0 Beta 1
+# Bristle 0.2.1 Beta 1
 
-Bristle 0.2 adds clearer variable previews, keyboard-friendly controls, persistent request ordering and guided Postman migration. Both signed Mac downloads are available without an app account.
+This patch fixes Postman collection discovery when Postman returns an HTTP 500 for a workspace. It keeps the 0.2 features and provides signed Mac downloads for Apple Silicon and Intel.
 
 ## Install
 
-- **Apple Silicon (M-series):** download `Bristle-0.2.0-mac-arm64.dmg`.
-- **Intel Mac:** download `Bristle-0.2.0-mac-x64.dmg`.
-- Open the DMG, copy Bristle into Applications, and launch through Finder.
+- **Apple Silicon (M-series):** download `Bristle-0.2.1-mac-arm64.dmg`.
+- **Intel Mac:** download `Bristle-0.2.1-mac-x64.dmg`.
+- Quit Bristle, open the DMG, replace Bristle in Applications, and launch through Finder.
 
-Both the app and disk image are Developer ID-signed, Apple-notarized and stapled. Updates are manual. The attached SHA-256 manifest identifies every other release asset.
+Both the app and disk image are Developer ID-signed, Apple-notarized and stapled. Updates are manual. The SHA-256 manifest identifies every other release asset.
 
-## Changes in 0.2
+## Fixed in 0.2.1
 
-- Inline variable decorations and active-environment previews keep nested secrets masked.
-- Themed dropdowns support keyboard selection and Escape; tabbed dialogs retain their height.
-- Drag and keyboard request reordering persists across restart and portable export/import.
-- New collections default to local app data, with a custom folder still available.
-- Guided Postman migration offers preview, workspace selection, cancellation and partial retry. File import remains available.
-- Large-response previews avoid unnecessary whole-buffer copies. Script execution deadlines start after worker initialization.
+- Recover from Postman workspace-listing server errors through the account collection index.
+- Verify each collection belongs to the selected workspace before offering it for import; keep environments scoped to that workspace.
+- Show collection-discovery progress and retain cancellation. Authentication and permission failures still stop with an error.
+
+To use the fix, open guided Postman migration, connect with your Postman API key, select the affected workspace, then choose collections. Discovery may take longer when the fallback is needed. Collection sharing is not required for resources your account can access.
 
 ## Verification and limits
 
-The exact application revision passed 204 unit tests and 38 source desktop workflows. Each signed installer passed a fresh-profile startup check and 31 installed workflows. Apple Silicon ran natively; Intel ran through Rosetta 2 on the same Apple Silicon Mac. Intel coverage combines retained passes, test wait and selector corrections, and the remaining workflows in separate batches. Earlier failed attempts, including a zoom-dialog closure during reported operator interaction before a complete focused pass, are preserved in private evidence; these counts do not claim a single uninterrupted passing Intel suite. Skipped cases are excluded.
+Application tests and typechecking were intentionally skipped for 0.2.1 at the maintainer's request. No unit, desktop, installed-app or startup suites were run. Prior 0.2.0 passing results do not validate the changed 0.2.1 binaries, and the patched migration has not been exercised end to end.
 
-Developer ID signatures, expected Apple Team ID, Gatekeeper assessments, accepted notarization submissions and stapled tickets passed for both architectures. The published binaries match the private verified release byte for byte.
+Compilation, architecture, Developer ID signatures, the expected Apple Team ID, Gatekeeper assessments, accepted notarization submissions and stapled tickets were checked for both installers. Published file hashes match the staged release assets.
 
-Physical Intel hardware, a fresh browser-to-Finder installation, existing-profile/unsigned-to-signed Keychain migration, real-account Postman migration, independent security review, native assistive technology and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved; this is not a claim of lower memory use than other clients. Windows/Linux downloads and automatic updates are not included.
+Physical Intel hardware, a fresh browser-to-Finder installation, existing-profile/unsigned-to-signed Keychain migration, real-account migration through the patched app, independent security review, native assistive technology and reference-hardware performance certification remain unverified. Earlier memory targets remain unresolved. Windows/Linux downloads and automatic updates are not included.
 
-The IT packet, verification JSON and signing-evidence ZIP identify the exact files and scope. Application source revision: `3470ee70468b4b478f511a8ee3194c5a1515fb9e`. The source stays private; this public tag identifies the publication documents.
+The IT packet, verification JSON and signing-evidence ZIP identify the exact files and scope. Application source revision: `b096f19d0d7de621ee026c0329e80989667dbab5`. The source stays private; this public tag identifies the publication documents.
 
 **[Get started](https://bristlebristle.app/getting-started/) · [Beta guide](https://bristlebristle.app/beta-guide/) · [Report a bug](https://github.com/AlexChaseJones/bristle/issues/new?template=bug-report.yml)**
 
